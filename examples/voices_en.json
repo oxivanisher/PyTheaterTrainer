@@ -1,0 +1,10 @@
+{
+  "models": {
+    "libritts": "voices/en_US-libritts_r-medium.onnx"
+  },
+  "voices": {
+    "Romeo": {"model": "libritts", "speaker": 90},
+    "Juliet": {"model": "libritts", "speaker": 15},
+    "Nurse": {"model": "libritts", "speaker": 0}
+  }
+}

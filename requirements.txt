@@ -1,0 +1,2 @@
+pydub>=0.25
+audioop-lts; python_version >= "3.13"

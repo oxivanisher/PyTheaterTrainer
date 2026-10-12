@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+
+# Generated audio
+output/
+test_recordings/
+voices/
+
+# Recordings (large, keep them out of the repo)
+recordings/
+*.mp3
+*.wav
+*.m4a
+*.ogg
+*.flac
+*.aac
+*.wma
+*.opus
+
+# Play text (copyright of the author)
+*.pdf
+script.txt
+voice_samples/

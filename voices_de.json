@@ -1,0 +1,37 @@
+{
+  "models": {
+    "thorsten": "voices/de_DE-thorsten-high.onnx",
+    "emotional": "voices/de_DE-thorsten_emotional-medium.onnx",
+    "karlsson": "voices/de_DE-karlsson-low.onnx",
+    "pavoque": "voices/de_DE-pavoque-low.onnx",
+    "kerstin": "voices/de_DE-kerstin-low.onnx",
+    "ramona": "voices/de_DE-ramona-low.onnx",
+    "eva": "voices/de_DE-eva_k-x_low.onnx"
+  },
+  "length_scale": 1.05,
+  "voices": {
+    "Dänu": {"model": "thorsten"},
+    "Mosimann": {"model": "karlsson"},
+    "Hans": {"model": "pavoque"},
+    "Kassier": {"model": "emotional", "speaker": "neutral"},
+    "Koch": {"model": "emotional", "speaker": "angry"},
+    "Günter": {"model": "emotional", "speaker": "sleepy"},
+    "Dissonanzi": {"model": "pavoque", "pitch": 2, "length_scale": 1.15},
+    "Tourist Leader": {"model": "karlsson", "pitch": 2, "length_scale": 0.95},
+
+    "Babette": {"model": "kerstin"},
+    "Managerin": {"model": "kerstin", "pitch": 2},
+    "Jacqueline": {"model": "eva"},
+    "Sophie": {"model": "kerstin", "pitch": -2, "length_scale": 1.1},
+    "Heidi": {"model": "kerstin", "pitch": -3, "length_scale": 0.9},
+    "Alice": {"model": "ramona", "pitch": 2},
+    "Belice": {"model": "eva", "pitch": 2},
+    "Tracy": {"model": "ramona", "pitch": -2, "length_scale": 1.1},
+    "Moderatorin": {"model": "eva", "pitch": -2},
+    "Schweigerin 1": {"model": "emotional", "speaker": "whisper"},
+    "Schweigerin 2": {"model": "emotional", "speaker": "whisper", "pitch": 2},
+
+    "Alle": {"model": "emotional", "speaker": "amused"},
+    "Touristen": {"model": "karlsson", "pitch": 2}
+  }
+}
