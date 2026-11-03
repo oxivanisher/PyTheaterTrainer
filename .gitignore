@@ -10,11 +10,15 @@ venv/
 
 # Generated audio
 output/
+output_rehearsal/
 test_recordings/
 voices/
 
 # Recordings (large, keep them out of the repo)
 recordings/
+original/
+work/
+tools/
 *.mp3
 *.wav
 *.m4a

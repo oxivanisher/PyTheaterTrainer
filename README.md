@@ -76,6 +76,73 @@ output/
 | `--full` | off | Also export the whole play as `full_play.mp3` |
 | `--bitrate` | `128k` | MP3 bitrate |
 
+## Cutting one long rehearsal recording
+
+If you recorded a whole rehearsal in one file, `cut_recording.py` finds every script line
+in it and writes the `NNN_Character.wav` files for the trainer. It uses the Whisper speech
+recognition on your own GPU, so neither the play nor the recording leaves the computer.
+Passages that were repeated use their latest take, and discussions in between are left out.
+
+```bash
+.venv/bin/pip install -r requirements-cut.txt
+
+# 1. Transcribe (2.5 hours of audio take about 4 minutes on a large GPU)
+.venv/bin/python cut_recording.py transcribe original/ZOOM0001.WAV
+
+# 2. Find each line of script.txt in the transcript, writes work/cuts.json
+.venv/bin/python cut_recording.py align script.txt
+
+# 3. Optional: remove hum and room noise, about 15 minutes (see below)
+.venv/bin/python cut_recording.py denoise
+
+# Then transcribe and align again. Each transcript catches lines the other misses, so both are used:
+.venv/bin/python cut_recording.py transcribe --cleaned
+.venv/bin/python cut_recording.py align script.txt
+
+# 4. Listen and tune in the browser
+.venv/bin/python cut_recording.py review
+
+# 5. Write the recordings, then create the training files as usual
+.venv/bin/python cut_recording.py export -o recordings --overwrite
+rm -rf output_rehearsal  # old files stay otherwise, because file names change between builds
+.venv/bin/python theater_trainer.py recordings -o output_rehearsal -g 0
+```
+
+In the review page, the list shows the lines worth checking first (red: not found or only
+estimated, orange: uncertain or moved to a later repetition). Drag the handles in the
+waveform or use the keyboard, pick another take, or place a missing line by hand. Every change
+is saved immediately and marks the line as confirmed. Confirmed lines survive a new `align`.
+Run `export` again afterwards. It only needs the line positions, so it takes seconds.
+
+Whisper mostly writes Swiss German as Standard German, so a line can be correct even if
+the score looks low. Lines nobody spoke (or that nothing matched) are left out of the export,
+and the trainer simply works without them.
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `transcribe --model` | `large-v3` | Whisper model |
+| `transcribe --device` | `cuda` | `cuda` or `cpu` (use `--compute-type int8` for CPU) |
+| `align --keep-ratio` | `0.75` | A later take must score at least this share of the best one |
+| `align --pad-before`, `--pad-after` | `0.25`, `0.35` | Seconds kept around the speech (raise them if cuts clip words) |
+| `denoise --limit` | `12` | Reduce noise by at most this many dB, `100` removes all of it |
+| `denoise --deep-filter` | `tools/deep-filter` | Path of the DeepFilterNet program |
+| `export --original-audio` | off | Cut from the original even if a cleaned recording exists |
+| `review --port` | `8765` | Port of the review page |
+| `export --min-score` | `0` | Leave out unconfirmed lines below this score |
+
+`denoise` needs the [DeepFilterNet](https://github.com/Rikorose/DeepFilterNet) program.
+It runs offline on the CPU:
+
+```bash
+mkdir -p tools
+curl -L -o tools/deep-filter https://github.com/Rikorose/DeepFilterNet/releases/download/v0.5.6/deep-filter-0.5.6-x86_64-unknown-linux-musl
+chmod +x tools/deep-filter
+```
+
+It filters mains hum at 100 Hz, so change `HUM_FILTER` if your hum sits elsewhere (e.g. 120 Hz
+in the US). The result is `work/cleaned.wav`, and the original recording stays untouched.
+The cuts remain valid, because the timing does not change.
+
 ## Testing without recordings
 
 Before the real recordings exist, you can generate them with the offline

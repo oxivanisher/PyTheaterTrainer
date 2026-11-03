@@ -1,0 +1,6 @@
+-r requirements.txt
+faster-whisper
+rapidfuzz
+numpy
+nvidia-cublas-cu12
+nvidia-cudnn-cu12
