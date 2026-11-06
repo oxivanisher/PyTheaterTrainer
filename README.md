@@ -207,3 +207,7 @@ from a small script file with one line per character.
 .venv/bin/python script_to_audio.py examples/romeo_and_juliet.txt examples/voices_en.json -o test_recordings --overwrite
 .venv/bin/python theater_trainer.py test_recordings -o output --trim
 ```
+
+## License
+
+MIT — see [LICENSE](LICENSE).
